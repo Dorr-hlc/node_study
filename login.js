@@ -97,37 +97,39 @@ app.post("/add", (req, res) => {
 // 验证码
 var rel_code = null;
 // 发送验证码接口
-app.get("/email", async (req, res) => {
-    var email = req.query.email;
+app.post("/api/email", async (req, res) => {
+    var email = req.body.email;
     rel_code = Math.random().toString().slice(-6); // 随机生成六位数
     var time = new Date().getTime();
-    let sql = `SELECT * from login where email = '${email}' `;
-    let data = await mysql(sql);
-    if (data.length) {
-      // 存在
-      res.send({
-        code: 500,
-        msg: "邮箱已注册",
-      });
-    } else {
-      var mail = {
-        // 发件人
-        from: `"侯某人"<*****@qq.com>`,//必须有<*****@qq.com>否则会报错Mail command failed: 502 Invalid paramenters
-        // 主题
-        subject: "验证码", //邮箱主题
-        // 收件人
-        to: email, //前台传过来的邮箱
-        // 邮件内容，HTML格式
-        text: "验证码为：" + rel_code, //发送验证码
-      };
-      // Initcode = code;
-      send_email(mail);
-      res.send({
-        code: 200,
-        icon: "success",
-        msg: "发送成功",
-      });
-    }
+    // let sql = `SELECT * from users where email = '${email}' `;
+    // let data = await mysql(sql);
+    var mail = {
+      // 发件人
+      from: `"侯某人"<1726660621@qq.com>`,//必须有<*****@qq.com>否则会报错Mail command failed: 502 Invalid paramenters
+      // 主题
+      subject: "验证码", //邮箱主题
+      // 收件人
+      to: email, //前台传过来的邮箱
+      // 邮件内容，HTML格式
+      text: "验证码为：" + rel_code, //发送验证码
+    };
+    // Initcode = code;
+    send_email(mail);
+    res.send({
+      code: 200,
+      icon: "success",
+      msg: "发送成功",
+    });
+    // if (data.length) {
+    //   // 存在
+    //   res.send({
+    //     code: 500,
+    //     msg: "邮箱已注册",
+    //   });
+    // } 
+    // else {
+
+    // }
   });
 
 
